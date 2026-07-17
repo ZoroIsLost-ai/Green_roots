@@ -142,10 +142,53 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="flex min-h-screen flex-col bg-surface">
+    <div className="flex min-h-screen flex-col bg-surface relative overflow-hidden">
+      {/* Premium Ambient Background Blobs (Soft Organic Lights) */}
+      <div className="pointer-events-none absolute -left-40 -top-40 h-[600px] w-[600px] rounded-full bg-primary-100/20 blur-[130px] z-0" />
+      <div className="pointer-events-none absolute -right-20 top-1/4 h-[500px] w-[500px] rounded-full bg-emerald-100/15 blur-[120px] z-0" />
+      <div className="pointer-events-none absolute -left-40 bottom-10 h-[450px] w-[450px] rounded-full bg-teal-100/20 blur-[110px] z-0" />
+
+      {/* Grid Pattern overlay fading towards the bottom and sides */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#e2ece9_1.5px,transparent_1.5px),linear-gradient(to_bottom,#e2ece9_1.5px,transparent_1.5px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-40 z-0" />
+
+      {/* Subtle Leaf Watermarks in background (visible on desktop) */}
+      <div className="pointer-events-none absolute right-[8%] bottom-[15%] text-primary-300/15 opacity-40 select-none hidden lg:block z-0">
+        <svg
+          width="240"
+          height="240"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="0.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 0 9.5a7 7 0 0 1-8 8.5z" />
+          <path d="M19 2v9.5" />
+          <path d="M9.8 6.1C5 8 3.5 12.5 5 17.5a7 7 0 0 0 6 2.5" />
+        </svg>
+      </div>
+
+      <div className="pointer-events-none absolute left-[5%] top-[25%] text-primary-300/10 opacity-30 select-none hidden lg:block z-0">
+        <svg
+          width="160"
+          height="160"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="0.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 0 9.5a7 7 0 0 1-8 8.5z" />
+          <path d="M19 2v9.5" />
+          <path d="M9.8 6.1C5 8 3.5 12.5 5 17.5a7 7 0 0 0 6 2.5" />
+        </svg>
+      </div>
+
       <Navbar />
 
-      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-8 sm:px-6 sm:py-12">
+      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-8 sm:px-6 sm:py-12 relative z-10">
         <div className="mb-6">
           <h1 className="text-xl font-semibold text-ink sm:text-2xl">
             अपनी जानकारी दर्ज करें
@@ -358,7 +401,7 @@ export default function HomePage() {
             </FormCard>
 
             {tempSubmissions.length > 0 && (
-              <div className="mt-2 rounded-2xl border border-surface-border bg-white p-6 shadow-sm animate-fade-in">
+              <div className="mt-2 rounded-2xl border border-surface-border bg-white p-6 shadow-sm animate-fade-in relative z-10">
                 <div className="flex flex-col gap-1 mb-4">
                   <h2 className="text-base font-bold text-ink">
                     अस्थायी रूप से सहेजे गए रिकॉर्ड ({tempSubmissions.length})
