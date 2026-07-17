@@ -10,7 +10,14 @@ async function isValidChain(vibhag: string, zilla: string, nagar: string) {
     const filePath = path.join(process.cwd(), "data", "hierarchy.json");
     const raw = await fs.readFile(filePath, "utf-8");
     const hierarchy: Hierarchy = JSON.parse(raw);
-    return Boolean(hierarchy[vibhag]?.[zilla]?.includes(nagar));
+    const item = hierarchy[vibhag]?.[zilla];
+    if (!item) return false;
+    return Boolean(
+      item.gramin_khand?.includes(nagar) ||
+      item.khandsam_nagar?.includes(nagar) ||
+      item.anya_nagar?.includes(nagar) ||
+      item.mahanagariya_nagar?.includes(nagar)
+    );
   } catch {
     // If the hierarchy file can't be read, fail open on this check
     // rather than blocking every submission because of a file issue.

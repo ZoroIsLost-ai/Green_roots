@@ -31,6 +31,11 @@ export default function HomePage() {
   const [zilla, setZilla] = useState("");
   const [nagar, setNagar] = useState("");
 
+  const [selectedGraminKhand, setSelectedGraminKhand] = useState("");
+  const [selectedKhandsamNagar, setSelectedKhandsamNagar] = useState("");
+  const [selectedAnyaNagar, setSelectedAnyaNagar] = useState("");
+  const [selectedMahanagariyaNagar, setSelectedMahanagariyaNagar] = useState("");
+
   const [tempSubmissions, setTempSubmissions] = useState<any[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -46,18 +51,35 @@ export default function HomePage() {
   });
 
   const zillaOptions = getZillaOptions(vibhag);
-  const nagarOptions = getNagarOptions(vibhag, zilla);
+  const { gramin_khand, khandsam_nagar, anya_nagar, mahanagariya_nagar } =
+    getNagarOptions(vibhag, zilla);
   const showForm = Boolean(vibhag && zilla && nagar);
 
   function handleVibhagChange(value: string) {
     setVibhag(value);
     setZilla("");
-    setNagar("");
+    clearNagarStates();
   }
 
   function handleZillaChange(value: string) {
     setZilla(value);
+    clearNagarStates();
+  }
+
+  const handleNagarSelect = (category: string, value: string) => {
+    setSelectedGraminKhand(category === "gramin_khand" ? value : "");
+    setSelectedKhandsamNagar(category === "khandsam_nagar" ? value : "");
+    setSelectedAnyaNagar(category === "anya_nagar" ? value : "");
+    setSelectedMahanagariyaNagar(category === "mahanagariya_nagar" ? value : "");
+    setNagar(value);
+  };
+
+  function clearNagarStates() {
     setNagar("");
+    setSelectedGraminKhand("");
+    setSelectedKhandsamNagar("");
+    setSelectedAnyaNagar("");
+    setSelectedMahanagariyaNagar("");
   }
 
   const handleAddRecord = (values: ContactFormValues) => {
@@ -69,7 +91,7 @@ export default function HomePage() {
     };
     setTempSubmissions((prev) => [...prev, newRecord]);
     reset(emptyFields);
-    setNagar("");
+    clearNagarStates();
     ToastNotification.success("रिकॉर्ड अस्थायी सूची में जोड़ दिया गया है");
   };
 
@@ -107,7 +129,7 @@ export default function HomePage() {
   function startOver() {
     setVibhag("");
     setZilla("");
-    setNagar("");
+    clearNagarStates();
     setSubmitted(false);
     setTempSubmissions([]);
     reset(emptyFields);
@@ -129,7 +151,7 @@ export default function HomePage() {
             अपनी जानकारी दर्ज करें
           </h1>
           <p className="mt-1 text-sm text-ink-muted">
-            पहले विभाग, फिर जिला और अंत में नगर चुनें।
+            विभाग और जिला चुनें, फिर नीचे दिए गए खंडों में से कोई एक चुनें।
           </p>
         </div>
 
@@ -177,14 +199,50 @@ export default function HomePage() {
                   onChange={handleZillaChange}
                 />
 
-                <DropdownField
-                  label="नगर"
-                  placeholder="नगर चुनें"
-                  value={nagar}
-                  options={nagarOptions}
-                  disabled={!zilla}
-                  onChange={setNagar}
-                />
+                {zilla && (
+                  <div className="mt-2 rounded-xl border border-surface-border bg-surface-card p-4 animate-fade-in">
+                    <p className="mb-3 text-xs font-semibold text-ink-muted">
+                      कृपया नीचे दिए गए 4 विकल्पों में से कोई एक चुनें:
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <DropdownField
+                        label="ग्रामीण खंड"
+                        placeholder={gramin_khand.length === 0 ? "कोई डेटा नहीं" : "ग्रामीण खंड चुनें"}
+                        value={selectedGraminKhand}
+                        options={gramin_khand}
+                        disabled={tempSubmissions.length > 0 || gramin_khand.length === 0}
+                        onChange={(val) => handleNagarSelect("gramin_khand", val)}
+                      />
+
+                      <DropdownField
+                        label="खंडसम नगर"
+                        placeholder={khandsam_nagar.length === 0 ? "कोई डेटा नहीं" : "खंडसम नगर चुनें"}
+                        value={selectedKhandsamNagar}
+                        options={khandsam_nagar}
+                        disabled={tempSubmissions.length > 0 || khandsam_nagar.length === 0}
+                        onChange={(val) => handleNagarSelect("khandsam_nagar", val)}
+                      />
+
+                      <DropdownField
+                        label="अन्य नगर"
+                        placeholder={anya_nagar.length === 0 ? "कोई डेटा नहीं" : "अन्य नगर चुनें"}
+                        value={selectedAnyaNagar}
+                        options={anya_nagar}
+                        disabled={tempSubmissions.length > 0 || anya_nagar.length === 0}
+                        onChange={(val) => handleNagarSelect("anya_nagar", val)}
+                      />
+
+                      <DropdownField
+                        label="महानगरीय नगर"
+                        placeholder={mahanagariya_nagar.length === 0 ? "कोई डेटा नहीं" : "महानगरीय नगर चुनें"}
+                        value={selectedMahanagariyaNagar}
+                        options={mahanagariya_nagar}
+                        disabled={tempSubmissions.length > 0 || mahanagariya_nagar.length === 0}
+                        onChange={(val) => handleNagarSelect("mahanagariya_nagar", val)}
+                      />
+                    </div>
+                  </div>
+                )}
 
                 {showForm && (
                   <form

@@ -1,6 +1,13 @@
+export type HierarchyItem = {
+  gramin_khand: string[];
+  khandsam_nagar: string[];
+  anya_nagar: string[];
+  mahanagariya_nagar: string[];
+};
+
 export type Hierarchy = {
   [vibhag: string]: {
-    [zilla: string]: string[];
+    [zilla: string]: HierarchyItem;
   };
 };
 

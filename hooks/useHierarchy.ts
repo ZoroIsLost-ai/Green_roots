@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import type { Hierarchy } from "@/types";
+import type { Hierarchy, HierarchyItem } from "@/types";
 
 export function useHierarchy() {
   const [data, setData] = useState<Hierarchy | null>(null);
@@ -38,9 +38,15 @@ export function useHierarchy() {
     return Object.keys(data[vibhag] ?? {});
   };
 
-  const getNagarOptions = (vibhag: string, zilla: string) => {
-    if (!data || !vibhag || !zilla) return [];
-    return data[vibhag]?.[zilla] ?? [];
+  const getNagarOptions = (vibhag: string, zilla: string): HierarchyItem => {
+    const emptyItem: HierarchyItem = {
+      gramin_khand: [],
+      khandsam_nagar: [],
+      anya_nagar: [],
+      mahanagariya_nagar: [],
+    };
+    if (!data || !vibhag || !zilla) return emptyItem;
+    return data[vibhag]?.[zilla] ?? emptyItem;
   };
 
   return { data, loading, error, vibhagOptions, getZillaOptions, getNagarOptions };
