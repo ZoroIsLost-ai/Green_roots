@@ -19,15 +19,29 @@ export async function GET() {
     return NextResponse.json({ error: "एक्सपोर्ट विफल हुआ" }, { status: 500 });
   }
 
-  const headers = ["Date", "विभाग", "जिला", "नगर", "Name", "Phone", "Location"];
+  const headers = [
+    "Date",
+    "विभाग",
+    "जिला",
+    "नगर",
+    "संयोजक नाम",
+    "संयोजक फ़ोन",
+    "संयोजक स्थान",
+    "सह संयोजक नाम",
+    "सह संयोजक फ़ोन",
+    "सह संयोजक स्थान",
+  ];
   const rows = (data ?? []).map((row) => [
     new Date(row.created_at).toLocaleString("hi-IN"),
     row.vibhag,
     row.zilla,
     row.nagar,
-    row.name,
-    row.phone,
-    row.location,
+    row.sanyojak_name,
+    row.sanyojak_phone,
+    row.sanyojak_location,
+    row.sah_sanyojak_name,
+    row.sah_sanyojak_phone,
+    row.sah_sanyojak_location,
   ]);
 
   const csv = [headers, ...rows]

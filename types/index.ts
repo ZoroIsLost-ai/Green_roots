@@ -10,16 +10,22 @@ export type ResponseRecord = {
   vibhag: string;
   zilla: string;
   nagar: string;
-  name: string;
-  phone: string;
-  location: string;
+  sanyojak_name: string;
+  sanyojak_phone: string;
+  sanyojak_location: string;
+  sah_sanyojak_name: string;
+  sah_sanyojak_phone: string;
+  sah_sanyojak_location: string;
 };
 
 export type SubmitPayload = {
   vibhag: string;
   zilla: string;
   nagar: string;
-  name: string;
-  phone: string;
-  location: string;
+  sanyojak_name: string;
+  sanyojak_phone: string;
+  sanyojak_location: string;
+  sah_sanyojak_name: string;
+  sah_sanyojak_phone: string;
+  sah_sanyojak_location: string;
 };

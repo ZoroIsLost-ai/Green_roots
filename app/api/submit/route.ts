@@ -59,9 +59,12 @@ export async function POST(req: NextRequest) {
       vibhag: result.data.vibhag,
       zilla: result.data.zilla,
       nagar: result.data.nagar,
-      name: result.data.name,
-      phone: result.data.phone,
-      location: result.data.location,
+      sanyojak_name: result.data.sanyojak_name,
+      sanyojak_phone: result.data.sanyojak_phone,
+      sanyojak_location: result.data.sanyojak_location,
+      sah_sanyojak_name: result.data.sah_sanyojak_name,
+      sah_sanyojak_phone: result.data.sah_sanyojak_phone,
+      sah_sanyojak_location: result.data.sah_sanyojak_location,
     });
   }
 

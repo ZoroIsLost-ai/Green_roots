@@ -14,7 +14,14 @@ import { useHierarchy } from "@/hooks/useHierarchy";
 import { contactFormSchema, type ContactFormValues } from "@/lib/validation";
 import { CheckCircle2 } from "lucide-react";
 
-const emptyFields: ContactFormValues = { name: "", phone: "", location: "" };
+const emptyFields: ContactFormValues = {
+  sanyojak_name: "",
+  sanyojak_phone: "",
+  sanyojak_location: "",
+  sah_sanyojak_name: "",
+  sah_sanyojak_phone: "",
+  sah_sanyojak_location: "",
+};
 
 export default function HomePage() {
   const { loading, error, vibhagOptions, getZillaOptions, getNagarOptions } =
@@ -116,7 +123,7 @@ export default function HomePage() {
     <div className="flex min-h-screen flex-col bg-surface">
       <Navbar />
 
-      <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-8 sm:px-6 sm:py-12">
+      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-8 sm:px-6 sm:py-12">
         <div className="mb-6">
           <h1 className="text-xl font-semibold text-ink sm:text-2xl">
             अपनी जानकारी दर्ज करें
@@ -182,49 +189,105 @@ export default function HomePage() {
                 {showForm && (
                   <form
                     onSubmit={handleSubmit(handleAddRecord)}
-                    className="mt-2 flex flex-col gap-4 border-t border-surface-border pt-5 animate-fade-in"
+                    className="mt-2 flex flex-col gap-6 border-t border-surface-border pt-5 animate-fade-in"
                   >
-                    <Controller
-                      name="name"
-                      control={control}
-                      render={({ field }) => (
-                        <InputField
-                          label="नाम"
-                          placeholder="अपना पूरा नाम दर्ज करें"
-                          value={field.value}
-                          error={errors.name?.message}
-                          onChange={field.onChange}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Sanyojak section */}
+                      <div className="flex flex-col gap-4">
+                        <h3 className="text-sm font-semibold text-primary border-b border-surface-border pb-1">
+                          संयोजक (Coordinator)
+                        </h3>
+                        <Controller
+                          name="sanyojak_name"
+                          control={control}
+                          render={({ field }) => (
+                            <InputField
+                              label="नाम"
+                              placeholder="संयोजक का नाम"
+                              value={field.value === "NA" ? "" : field.value}
+                              error={errors.sanyojak_name?.message}
+                              onChange={field.onChange}
+                            />
+                          )}
                         />
-                      )}
-                    />
-                    <Controller
-                      name="phone"
-                      control={control}
-                      render={({ field }) => (
-                        <InputField
-                          label="फ़ोन नंबर"
-                          placeholder="10 अंकों का मोबाइल नंबर"
-                          value={field.value}
-                          error={errors.phone?.message}
-                          inputMode="numeric"
-                          maxLength={10}
-                          onChange={(v) => field.onChange(v.replace(/\D/g, ""))}
+                        <Controller
+                          name="sanyojak_phone"
+                          control={control}
+                          render={({ field }) => (
+                            <InputField
+                              label="फ़ोन नंबर"
+                              placeholder="10 अंकों का मोबाइल नंबर"
+                              value={field.value === "NA" ? "" : field.value}
+                              error={errors.sanyojak_phone?.message}
+                              inputMode="numeric"
+                              maxLength={10}
+                              onChange={(v) => field.onChange(v.replace(/\D/g, ""))}
+                            />
+                          )}
                         />
-                      )}
-                    />
-                    <Controller
-                      name="location"
-                      control={control}
-                      render={({ field }) => (
-                        <InputField
-                          label="स्थान"
-                          placeholder="स्थान दर्ज करें"
-                          value={field.value}
-                          error={errors.location?.message}
-                          onChange={field.onChange}
+                        <Controller
+                          name="sanyojak_location"
+                          control={control}
+                          render={({ field }) => (
+                            <InputField
+                              label="स्थान"
+                              placeholder="स्थान दर्ज करें"
+                              value={field.value === "NA" ? "" : field.value}
+                              error={errors.sanyojak_location?.message}
+                              onChange={field.onChange}
+                            />
+                          )}
                         />
-                      )}
-                    />
+                      </div>
+
+                      {/* Sah Sanyojak section */}
+                      <div className="flex flex-col gap-4">
+                        <h3 className="text-sm font-semibold text-primary border-b border-surface-border pb-1">
+                          सह संयोजक (Co-coordinator)
+                        </h3>
+                        <Controller
+                          name="sah_sanyojak_name"
+                          control={control}
+                          render={({ field }) => (
+                            <InputField
+                              label="नाम"
+                              placeholder="सह संयोजक का नाम"
+                              value={field.value === "NA" ? "" : field.value}
+                              error={errors.sah_sanyojak_name?.message}
+                              onChange={field.onChange}
+                            />
+                          )}
+                        />
+                        <Controller
+                          name="sah_sanyojak_phone"
+                          control={control}
+                          render={({ field }) => (
+                            <InputField
+                              label="फ़ोन नंबर"
+                              placeholder="10 अंकों का मोबाइल नंबर"
+                              value={field.value === "NA" ? "" : field.value}
+                              error={errors.sah_sanyojak_phone?.message}
+                              inputMode="numeric"
+                              maxLength={10}
+                              onChange={(v) => field.onChange(v.replace(/\D/g, ""))}
+                            />
+                          )}
+                        />
+                        <Controller
+                          name="sah_sanyojak_location"
+                          control={control}
+                          render={({ field }) => (
+                            <InputField
+                              label="स्थान"
+                              placeholder="स्थान दर्ज करें"
+                              value={field.value === "NA" ? "" : field.value}
+                              error={errors.sah_sanyojak_location?.message}
+                              onChange={field.onChange}
+                            />
+                          )}
+                        />
+                      </div>
+                    </div>
 
                     <SubmitButton 
                       loading={false} 
@@ -250,21 +313,29 @@ export default function HomePage() {
                   <table className="min-w-full divide-y divide-surface-border text-left text-sm">
                     <thead className="bg-surface-card text-ink font-semibold text-xs uppercase">
                       <tr>
-                        <th className="px-4 py-3">नाम</th>
-                        <th className="px-4 py-3">फ़ोन नंबर</th>
+                        <th className="px-4 py-3">संयोजक Details</th>
+                        <th className="px-4 py-3">सह संयोजक Details</th>
                         <th className="px-4 py-3">नगर</th>
-                        <th className="px-4 py-3">स्थान</th>
                         <th className="px-4 py-3 text-right">कार्रवाई</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-surface-border">
                       {tempSubmissions.map((item, index) => (
                         <tr key={index} className="hover:bg-slate-50 transition-colors">
-                          <td className="px-4 py-3 font-medium text-ink">{item.name}</td>
-                          <td className="px-4 py-3 text-ink-muted">{item.phone}</td>
-                          <td className="px-4 py-3 text-ink-muted">{item.nagar}</td>
-                          <td className="px-4 py-3 text-ink-muted">{item.location}</td>
-                          <td className="px-4 py-3 text-right">
+                          <td className="px-4 py-3 text-ink">
+                            <div className="font-medium">{item.sanyojak_name}</div>
+                            <div className="text-xs text-ink-muted">
+                              {item.sanyojak_phone !== "NA" ? item.sanyojak_phone : "कोई फ़ोन नहीं"} | {item.sanyojak_location}
+                            </div>
+                          </td>
+                          <td className="px-4 py-3 text-ink">
+                            <div className="font-medium">{item.sah_sanyojak_name}</div>
+                            <div className="text-xs text-ink-muted">
+                              {item.sah_sanyojak_phone !== "NA" ? item.sah_sanyojak_phone : "कोई फ़ोन नहीं"} | {item.sah_sanyojak_location}
+                            </div>
+                          </td>
+                          <td className="px-4 py-3 text-ink-muted align-middle">{item.nagar}</td>
+                          <td className="px-4 py-3 text-right align-middle">
                             <button
                               type="button"
                               onClick={() => handleRemoveRecord(index)}

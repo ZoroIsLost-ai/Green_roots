@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
   if (zilla) query = query.eq("zilla", zilla);
   if (search) {
     query = query.or(
-      `name.ilike.%${search}%,phone.ilike.%${search}%,location.ilike.%${search}%,nagar.ilike.%${search}%`
+      `sanyojak_name.ilike.%${search}%,sanyojak_phone.ilike.%${search}%,sanyojak_location.ilike.%${search}%,sah_sanyojak_name.ilike.%${search}%,sah_sanyojak_phone.ilike.%${search}%,sah_sanyojak_location.ilike.%${search}%,nagar.ilike.%${search}%`
     );
   }
 

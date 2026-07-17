@@ -9,14 +9,15 @@ create table if not exists public.responses (
   vibhag text not null,
   zilla text not null,
   nagar text not null,
-  name text not null,
-  phone text not null,
-  location text not null
+  sanyojak_name text not null default 'NA',
+  sanyojak_phone text not null default 'NA',
+  sanyojak_location text not null default 'NA',
+  sah_sanyojak_name text not null default 'NA',
+  sah_sanyojak_phone text not null default 'NA',
+  sah_sanyojak_location text not null default 'NA'
 );
 
 create index if not exists responses_created_at_idx on public.responses (created_at desc);
-create index if not exists responses_vibhag_idx on public.responses (vibhag);
-create index if not exists responses_zilla_idx on public.responses (zilla);
 
 -- Row Level Security: the public form only ever uses the anon key
 -- to INSERT. All reads, updates, and deletes go through the admin
