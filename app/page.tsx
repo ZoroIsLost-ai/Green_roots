@@ -23,9 +23,96 @@ const emptyFields: ContactFormValues = {
   sah_sanyojak_location: "",
 };
 
+const translations = {
+  hi: {
+    title: "अपनी जानकारी दर्ज करें",
+    subtitle: "विभाग और जिला चुनें, फिर नीचे दिए गए खंडों में से कोई एक चुनें।",
+    vibhag: "विभाग",
+    vibhagPlaceholder: "विभाग चुनें",
+    zilla: "जिला",
+    zillaPlaceholder: "जिला चुनें",
+    selectOneCategory: "कृपया नीचे दिए गए 4 विकल्पों में से कोई एक चुनें:",
+    graminKhand: "ग्रामीण खंड",
+    graminKhandPlaceholder: "ग्रामीण खंड चुनें",
+    khandsamNagar: "खंडसम नगर",
+    khandsamNagarPlaceholder: "खंडसम नगर चुनें",
+    anyaNagar: "अन्य नगर",
+    anyaNagarPlaceholder: "अन्य नगर चुनें",
+    mahanagariyaNagar: "महानगरीय नगर",
+    mahanagariyaNagarPlaceholder: "महानगरीय नगर चुनें",
+    noData: "कोई डेटा नहीं",
+    coordinator: "संयोजक (Coordinator)",
+    coCoordinator: "सह संयोजक (Co-coordinator)",
+    name: "नाम (Name)",
+    namePlaceholder: "संयोजक का नाम",
+    namePlaceholderSah: "सह संयोजक का नाम",
+    phone: "फ़ोन नंबर (Phone)",
+    phonePlaceholder: "10 अंकों का मोबाइल नंबर",
+    location: "स्थान (Location)",
+    locationPlaceholder: "स्थान दर्ज करें",
+    addToList: "सूची में जोड़ें (Add to List)",
+    stagedRecords: "अस्थायी रूप से सहेजे गए रिकॉर्ड",
+    stagedRecordsDesc: "ये रिकॉर्ड अभी डेटाबेस में सहेजे नहीं गए हैं। आप नीचे \"डेटा सबमिट करें\" दबाकर इन्हें एक साथ भेज सकते हैं।",
+    sanyojakDetails: "संयोजक Details",
+    sahSanyojakDetails: "सह संयोजक Details",
+    city: "नगर",
+    action: "कार्रवाई",
+    remove: "हटाएं",
+    totalStaged: "कुल अस्थायी रिकॉर्ड:",
+    submitBatch: "डेटा सबमिट करें (Submit Batch)",
+    thanks: "धन्यवाद!",
+    thanksDesc: "आपकी सभी प्रविष्टियाँ डेटाबेस में दर्ज कर ली गई हैं।",
+    addNew: "नई प्रविष्टि जोड़ें",
+    loading: "लोड हो रहा है...",
+  },
+  en: {
+    title: "Enter Your Details",
+    subtitle: "Select division and district, then choose any one of the sections below.",
+    vibhag: "Division",
+    vibhagPlaceholder: "Select Division",
+    zilla: "District",
+    zillaPlaceholder: "Select District",
+    selectOneCategory: "Please select any one of the 4 options below:",
+    graminKhand: "Gramin Khand",
+    graminKhandPlaceholder: "Select Gramin Khand",
+    khandsamNagar: "Khandsam Nagar",
+    khandsamNagarPlaceholder: "Select Khandsam Nagar",
+    anyaNagar: "Anya Nagar",
+    anyaNagarPlaceholder: "Select Anya Nagar",
+    mahanagariyaNagar: "Mahanagariya Nagar",
+    mahanagariyaNagarPlaceholder: "Select Mahanagariya Nagar",
+    noData: "No Data",
+    coordinator: "Coordinator (संयोजक)",
+    coCoordinator: "Co-coordinator (सह संयोजक)",
+    name: "Name",
+    namePlaceholder: "Coordinator name",
+    namePlaceholderSah: "Co-coordinator name",
+    phone: "Phone Number",
+    phonePlaceholder: "10-digit mobile number",
+    location: "Location",
+    locationPlaceholder: "Enter location",
+    addToList: "Add to List",
+    stagedRecords: "Temporarily Staged Records",
+    stagedRecordsDesc: "These records are not yet saved to the database. Click \"Submit Batch\" below to submit them together.",
+    sanyojakDetails: "Coordinator Details",
+    sahSanyojakDetails: "Co-coordinator Details",
+    city: "City / Town",
+    action: "Action",
+    remove: "Remove",
+    totalStaged: "Total Staged Records:",
+    submitBatch: "Submit Batch",
+    thanks: "Thank You!",
+    thanksDesc: "All your entries have been successfully saved to the database.",
+    addNew: "Add New Record",
+    loading: "Loading...",
+  }
+};
+
 export default function HomePage() {
   const { loading, error, vibhagOptions, getZillaOptions, getNagarOptions } =
     useHierarchy();
+
+  const [lang, setLang] = useState<"hi" | "en">("hi");
 
   const [vibhag, setVibhag] = useState("");
   const [zilla, setZilla] = useState("");
@@ -39,6 +126,8 @@ export default function HomePage() {
   const [tempSubmissions, setTempSubmissions] = useState<any[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  const t = translations[lang];
 
   const {
     control,
@@ -91,12 +180,20 @@ export default function HomePage() {
     };
     setTempSubmissions((prev) => [...prev, newRecord]);
     reset(emptyFields);
-    ToastNotification.success("रिकॉर्ड अस्थायी सूची में जोड़ दिया गया है");
+    ToastNotification.success(
+      lang === "hi"
+        ? "रिकॉर्ड अस्थायी सूची में जोड़ दिया गया है"
+        : "Record added to the temporary list successfully"
+    );
   };
 
   const handleRemoveRecord = (index: number) => {
     setTempSubmissions((prev) => prev.filter((_, i) => i !== index));
-    ToastNotification.info("रिकॉर्ड सूची से हटा दिया गया है");
+    ToastNotification.info(
+      lang === "hi"
+        ? "रिकॉर्ड सूची से हटा दिया गया है"
+        : "Record removed from list"
+    );
   };
 
   const handleBulkSubmit = async () => {
@@ -114,7 +211,11 @@ export default function HomePage() {
         throw new Error(json.error ?? "जमा करने में समस्या हुई");
       }
 
-      ToastNotification.success("सभी प्रविष्टियाँ सफलतापूर्वक जमा हो गईं");
+      ToastNotification.success(
+        lang === "hi"
+          ? "सभी प्रविष्टियाँ सफलतापूर्वक जमा हो गईं"
+          : "All entries successfully submitted"
+      );
       setSubmitted(true);
       setTempSubmissions([]);
       clearNagarStates();
@@ -136,9 +237,9 @@ export default function HomePage() {
   }
 
   const steps = [
-    { label: "विभाग", value: vibhag, active: !vibhag },
-    { label: "जिला", value: zilla, active: Boolean(vibhag) && !zilla },
-    { label: "नगर", value: nagar, active: Boolean(zilla) && !nagar },
+    { label: t.vibhag, value: vibhag, active: !vibhag },
+    { label: t.zilla, value: zilla, active: Boolean(vibhag) && !zilla },
+    { label: t.city, value: nagar, active: Boolean(zilla) && !nagar },
   ];
 
   return (
@@ -186,15 +287,15 @@ export default function HomePage() {
         </svg>
       </div>
 
-      <Navbar />
+      <Navbar lang={lang} setLang={setLang} />
 
       <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-8 sm:px-6 sm:py-12 relative z-10">
         <div className="mb-6">
-          <h1 className="text-xl font-semibold text-ink sm:text-2xl">
-            अपनी जानकारी दर्ज करें
+          <h1 className="text-xl font-bold text-ink sm:text-2xl">
+            {t.title}
           </h1>
           <p className="mt-1 text-sm text-ink-muted">
-            विभाग और जिला चुनें, फिर नीचे दिए गए खंडों में से कोई एक चुनें।
+            {t.subtitle}
           </p>
         </div>
 
@@ -205,19 +306,19 @@ export default function HomePage() {
         )}
 
         {submitted ? (
-          <div className="animate-fade-in flex flex-col items-center gap-4 rounded-2xl border border-surface-border bg-surface-card p-10 text-center">
+          <div className="animate-fade-in flex flex-col items-center gap-4 rounded-2xl border border-surface-border bg-surface-card p-10 text-center shadow-sm">
             <CheckCircle2 className="h-10 w-10 text-primary" />
             <div>
-              <p className="text-base font-semibold text-ink">धन्यवाद!</p>
+              <p className="text-base font-semibold text-ink">{t.thanks}</p>
               <p className="mt-1 text-sm text-ink-muted">
-                आपकी सभी प्रविष्टियाँ डेटाबेस में दर्ज कर ली गई हैं।
+                {t.thanksDesc}
               </p>
             </div>
             <button
               onClick={startOver}
               className="rounded-xl border border-surface-border bg-white px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-surface-card"
             >
-              नई प्रविष्टि जोड़ें
+              {t.addNew}
             </button>
           </div>
         ) : (
@@ -225,8 +326,8 @@ export default function HomePage() {
             <FormCard steps={steps}>
               <div className="flex flex-col gap-4">
                 <DropdownField
-                  label="विभाग"
-                  placeholder={loading ? "लोड हो रहा है..." : "विभाग चुनें"}
+                  label={t.vibhag}
+                  placeholder={loading ? t.loading : t.vibhagPlaceholder}
                   value={vibhag}
                   options={vibhagOptions}
                   disabled={loading || tempSubmissions.length > 0}
@@ -234,8 +335,8 @@ export default function HomePage() {
                 />
 
                 <DropdownField
-                  label="जिला"
-                  placeholder="जिला चुनें"
+                  label={t.zilla}
+                  placeholder={t.zillaPlaceholder}
                   value={zilla}
                   options={zillaOptions}
                   disabled={!vibhag || tempSubmissions.length > 0}
@@ -243,14 +344,14 @@ export default function HomePage() {
                 />
 
                 {zilla && (
-                  <div className="mt-2 rounded-xl border border-surface-border bg-surface-card p-4 animate-fade-in">
+                  <div className="mt-2 rounded-xl border border-surface-border bg-surface-soft p-4 animate-fade-in">
                     <p className="mb-3 text-xs font-semibold text-ink-muted">
-                      कृपया नीचे दिए गए 4 विकल्पों में से कोई एक चुनें:
+                      {t.selectOneCategory}
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <DropdownField
-                        label="ग्रामीण खंड"
-                        placeholder={gramin_khand.length === 0 ? "कोई डेटा नहीं" : "ग्रामीण खंड चुनें"}
+                        label={t.graminKhand}
+                        placeholder={gramin_khand.length === 0 ? t.noData : t.graminKhandPlaceholder}
                         value={selectedGraminKhand}
                         options={gramin_khand}
                         disabled={tempSubmissions.length > 0 || gramin_khand.length === 0}
@@ -258,8 +359,8 @@ export default function HomePage() {
                       />
 
                       <DropdownField
-                        label="खंडसम नगर"
-                        placeholder={khandsam_nagar.length === 0 ? "कोई डेटा नहीं" : "खंडसम नगर चुनें"}
+                        label={t.khandsamNagar}
+                        placeholder={khandsam_nagar.length === 0 ? t.noData : t.khandsamNagarPlaceholder}
                         value={selectedKhandsamNagar}
                         options={khandsam_nagar}
                         disabled={tempSubmissions.length > 0 || khandsam_nagar.length === 0}
@@ -267,8 +368,8 @@ export default function HomePage() {
                       />
 
                       <DropdownField
-                        label="अन्य नगर"
-                        placeholder={anya_nagar.length === 0 ? "कोई डेटा नहीं" : "अन्य नगर चुनें"}
+                        label={t.anyaNagar}
+                        placeholder={anya_nagar.length === 0 ? t.noData : t.anyaNagarPlaceholder}
                         value={selectedAnyaNagar}
                         options={anya_nagar}
                         disabled={tempSubmissions.length > 0 || anya_nagar.length === 0}
@@ -276,8 +377,8 @@ export default function HomePage() {
                       />
 
                       <DropdownField
-                        label="महानगरीय नगर"
-                        placeholder={mahanagariya_nagar.length === 0 ? "कोई डेटा नहीं" : "महानगरीय नगर चुनें"}
+                        label={t.mahanagariyaNagar}
+                        placeholder={mahanagariya_nagar.length === 0 ? t.noData : t.mahanagariyaNagarPlaceholder}
                         value={selectedMahanagariyaNagar}
                         options={mahanagariya_nagar}
                         disabled={tempSubmissions.length > 0 || mahanagariya_nagar.length === 0}
@@ -296,15 +397,15 @@ export default function HomePage() {
                       {/* Sanyojak section */}
                       <div className="flex flex-col gap-4">
                         <h3 className="text-sm font-semibold text-primary border-b border-surface-border pb-1">
-                          संयोजक (Coordinator)
+                          {t.coordinator}
                         </h3>
                         <Controller
                           name="sanyojak_name"
                           control={control}
                           render={({ field }) => (
                             <InputField
-                              label="नाम"
-                              placeholder="संयोजक का नाम"
+                              label={t.name}
+                              placeholder={t.namePlaceholder}
                               value={field.value === "NA" ? "" : field.value}
                               error={errors.sanyojak_name?.message}
                               onChange={field.onChange}
@@ -316,8 +417,8 @@ export default function HomePage() {
                           control={control}
                           render={({ field }) => (
                             <InputField
-                              label="फ़ोन नंबर"
-                              placeholder="10 अंकों का मोबाइल नंबर"
+                              label={t.phone}
+                              placeholder={t.phonePlaceholder}
                               value={field.value === "NA" ? "" : field.value}
                               error={errors.sanyojak_phone?.message}
                               inputMode="numeric"
@@ -331,8 +432,8 @@ export default function HomePage() {
                           control={control}
                           render={({ field }) => (
                             <InputField
-                              label="स्थान"
-                              placeholder="स्थान दर्ज करें"
+                              label={t.location}
+                              placeholder={t.locationPlaceholder}
                               value={field.value === "NA" ? "" : field.value}
                               error={errors.sanyojak_location?.message}
                               onChange={field.onChange}
@@ -344,15 +445,15 @@ export default function HomePage() {
                       {/* Sah Sanyojak section */}
                       <div className="flex flex-col gap-4">
                         <h3 className="text-sm font-semibold text-primary border-b border-surface-border pb-1">
-                          सह संयोजक (Co-coordinator)
+                          {t.coCoordinator}
                         </h3>
                         <Controller
                           name="sah_sanyojak_name"
                           control={control}
                           render={({ field }) => (
                             <InputField
-                              label="नाम"
-                              placeholder="सह संयोजक का नाम"
+                              label={t.name}
+                              placeholder={t.namePlaceholderSah}
                               value={field.value === "NA" ? "" : field.value}
                               error={errors.sah_sanyojak_name?.message}
                               onChange={field.onChange}
@@ -364,8 +465,8 @@ export default function HomePage() {
                           control={control}
                           render={({ field }) => (
                             <InputField
-                              label="फ़ोन नंबर"
-                              placeholder="10 अंकों का मोबाइल नंबर"
+                              label={t.phone}
+                              placeholder={t.phonePlaceholder}
                               value={field.value === "NA" ? "" : field.value}
                               error={errors.sah_sanyojak_phone?.message}
                               inputMode="numeric"
@@ -379,8 +480,8 @@ export default function HomePage() {
                           control={control}
                           render={({ field }) => (
                             <InputField
-                              label="स्थान"
-                              placeholder="स्थान दर्ज करें"
+                              label={t.location}
+                              placeholder={t.locationPlaceholder}
                               value={field.value === "NA" ? "" : field.value}
                               error={errors.sah_sanyojak_location?.message}
                               onChange={field.onChange}
@@ -392,7 +493,7 @@ export default function HomePage() {
 
                     <SubmitButton 
                       loading={false} 
-                      label="सूची में जोड़ें (Add to List)" 
+                      label={t.addToList} 
                       onClick={handleSubmit(handleAddRecord)} 
                     />
                   </form>
@@ -404,20 +505,20 @@ export default function HomePage() {
               <div className="mt-2 rounded-2xl border border-surface-border bg-white p-6 shadow-sm animate-fade-in relative z-10">
                 <div className="flex flex-col gap-1 mb-4">
                   <h2 className="text-base font-bold text-ink">
-                    अस्थायी रूप से सहेजे गए रिकॉर्ड ({tempSubmissions.length})
+                    {t.stagedRecords} ({tempSubmissions.length})
                   </h2>
                   <p className="text-xs text-ink-muted">
-                    ये रिकॉर्ड अभी डेटाबेस में सहेजे नहीं गए हैं। आप नीचे "डेटा सबमिट करें" दबाकर इन्हें एक साथ भेज सकते हैं।
+                    {t.stagedRecordsDesc}
                   </p>
                 </div>
                 <div className="overflow-x-auto rounded-xl border border-surface-border">
                   <table className="min-w-full divide-y divide-surface-border text-left text-sm">
                     <thead className="bg-surface-card text-ink font-semibold text-xs uppercase">
                       <tr>
-                        <th className="px-4 py-3">संयोजक Details</th>
-                        <th className="px-4 py-3">सह संयोजक Details</th>
-                        <th className="px-4 py-3">नगर</th>
-                        <th className="px-4 py-3 text-right">कार्रवाई</th>
+                        <th className="px-4 py-3">{t.sanyojakDetails}</th>
+                        <th className="px-4 py-3">{t.sahSanyojakDetails}</th>
+                        <th className="px-4 py-3">{t.city}</th>
+                        <th className="px-4 py-3 text-right">{t.action}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-surface-border">
@@ -442,7 +543,7 @@ export default function HomePage() {
                               onClick={() => handleRemoveRecord(index)}
                               className="text-xs font-semibold text-red-600 hover:text-red-800 transition-colors"
                             >
-                              हटाएं
+                              {t.remove}
                             </button>
                           </td>
                         </tr>
@@ -453,14 +554,14 @@ export default function HomePage() {
 
                 <div className="mt-5 flex flex-col gap-3">
                   <div className="flex justify-between items-center text-sm font-semibold text-ink px-1">
-                    <span>कुल अस्थायी रिकॉर्ड:</span>
+                    <span>{t.totalStaged}</span>
                     <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs">
                       {tempSubmissions.length}
                     </span>
                   </div>
                   <SubmitButton
                     loading={submitting}
-                    label="डेटा सबमिट करें (Submit Batch)"
+                    label={t.submitBatch}
                     onClick={handleBulkSubmit}
                   />
                 </div>
