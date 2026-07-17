@@ -11,6 +11,8 @@ export async function GET(req: NextRequest) {
   const pageSize = Math.min(100, Math.max(1, Number(searchParams.get("pageSize") ?? "20")));
 
   const supabase = supabaseServer();
+
+  // Fetch paginated records query
   let query = supabase
     .from("responses")
     .select("*", { count: "exact" })
@@ -35,10 +37,31 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "रिकॉर्ड लोड नहीं हो सके" }, { status: 500 });
   }
 
+  // Fetch stats (non-paginated) for the dashboard indicators
+  const { data: allFields } = await supabase
+    .from("responses")
+    .select("sanyojak_name, nagar");
+
+  const uniqueUsers = new Set(
+    (allFields ?? [])
+      .map((r) => r.sanyojak_name)
+      .filter((name) => name && name !== "NA")
+  ).size;
+
+  const activeCities = new Set(
+    (allFields ?? [])
+      .map((r) => r.nagar)
+      .filter((nagar) => nagar && nagar !== "NA")
+  ).size;
+
   return NextResponse.json({
     records: data ?? [],
     total: count ?? 0,
     page,
     pageSize,
+    stats: {
+      uniqueUsers,
+      activeCities,
+    },
   });
 }
