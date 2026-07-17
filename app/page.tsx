@@ -91,7 +91,6 @@ export default function HomePage() {
     };
     setTempSubmissions((prev) => [...prev, newRecord]);
     reset(emptyFields);
-    clearNagarStates();
     ToastNotification.success("रिकॉर्ड अस्थायी सूची में जोड़ दिया गया है");
   };
 
@@ -118,6 +117,7 @@ export default function HomePage() {
       ToastNotification.success("सभी प्रविष्टियाँ सफलतापूर्वक जमा हो गईं");
       setSubmitted(true);
       setTempSubmissions([]);
+      clearNagarStates();
     } catch (err) {
       const message = err instanceof Error ? err.message : "कुछ गलत हो गया";
       ToastNotification.error(message);
