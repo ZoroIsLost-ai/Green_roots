@@ -24,6 +24,7 @@ export default function HomePage() {
   const [zilla, setZilla] = useState("");
   const [nagar, setNagar] = useState("");
 
+  const [tempSubmissions, setTempSubmissions] = useState<any[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -52,13 +53,32 @@ export default function HomePage() {
     setNagar("");
   }
 
-  const onSubmit = async (values: ContactFormValues) => {
+  const handleAddRecord = (values: ContactFormValues) => {
+    const newRecord = {
+      vibhag,
+      zilla,
+      nagar,
+      ...values,
+    };
+    setTempSubmissions((prev) => [...prev, newRecord]);
+    reset(emptyFields);
+    setNagar("");
+    ToastNotification.success("रिकॉर्ड अस्थायी सूची में जोड़ दिया गया है");
+  };
+
+  const handleRemoveRecord = (index: number) => {
+    setTempSubmissions((prev) => prev.filter((_, i) => i !== index));
+    ToastNotification.info("रिकॉर्ड सूची से हटा दिया गया है");
+  };
+
+  const handleBulkSubmit = async () => {
+    if (tempSubmissions.length === 0) return;
     setSubmitting(true);
     try {
       const res = await fetch("/api/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ vibhag, zilla, nagar, ...values }),
+        body: JSON.stringify(tempSubmissions),
       });
 
       const json = await res.json();
@@ -66,9 +86,9 @@ export default function HomePage() {
         throw new Error(json.error ?? "जमा करने में समस्या हुई");
       }
 
-      ToastNotification.success("आपकी प्रतिक्रिया सफलतापूर्वक जमा हो गई");
+      ToastNotification.success("सभी प्रविष्टियाँ सफलतापूर्वक जमा हो गईं");
       setSubmitted(true);
-      reset(emptyFields);
+      setTempSubmissions([]);
     } catch (err) {
       const message = err instanceof Error ? err.message : "कुछ गलत हो गया";
       ToastNotification.error(message);
@@ -82,6 +102,7 @@ export default function HomePage() {
     setZilla("");
     setNagar("");
     setSubmitted(false);
+    setTempSubmissions([]);
     reset(emptyFields);
   }
 
@@ -117,7 +138,7 @@ export default function HomePage() {
             <div>
               <p className="text-base font-semibold text-ink">धन्यवाद!</p>
               <p className="mt-1 text-sm text-ink-muted">
-                आपकी प्रतिक्रिया दर्ज कर ली गई है।
+                आपकी सभी प्रविष्टियाँ डेटाबेस में दर्ज कर ली गई हैं।
               </p>
             </div>
             <button
@@ -128,87 +149,152 @@ export default function HomePage() {
             </button>
           </div>
         ) : (
-          <FormCard steps={steps}>
-            <div className="flex flex-col gap-4">
-              <DropdownField
-                label="विभाग"
-                placeholder={loading ? "लोड हो रहा है..." : "विभाग चुनें"}
-                value={vibhag}
-                options={vibhagOptions}
-                disabled={loading}
-                onChange={handleVibhagChange}
-              />
+          <div className="flex flex-col gap-6">
+            <FormCard steps={steps}>
+              <div className="flex flex-col gap-4">
+                <DropdownField
+                  label="विभाग"
+                  placeholder={loading ? "लोड हो रहा है..." : "विभाग चुनें"}
+                  value={vibhag}
+                  options={vibhagOptions}
+                  disabled={loading || tempSubmissions.length > 0}
+                  onChange={handleVibhagChange}
+                />
 
-              <DropdownField
-                label="जिला"
-                placeholder="जिला चुनें"
-                value={zilla}
-                options={zillaOptions}
-                disabled={!vibhag}
-                onChange={handleZillaChange}
-              />
+                <DropdownField
+                  label="जिला"
+                  placeholder="जिला चुनें"
+                  value={zilla}
+                  options={zillaOptions}
+                  disabled={!vibhag || tempSubmissions.length > 0}
+                  onChange={handleZillaChange}
+                />
 
-              <DropdownField
-                label="नगर"
-                placeholder="नगर चुनें"
-                value={nagar}
-                options={nagarOptions}
-                disabled={!zilla}
-                onChange={setNagar}
-              />
+                <DropdownField
+                  label="नगर"
+                  placeholder="नगर चुनें"
+                  value={nagar}
+                  options={nagarOptions}
+                  disabled={!zilla}
+                  onChange={setNagar}
+                />
 
-              {showForm && (
-                <form
-                  onSubmit={handleSubmit(onSubmit)}
-                  className="mt-2 flex flex-col gap-4 border-t border-surface-border pt-5 animate-fade-in"
-                >
-                  <Controller
-                    name="name"
-                    control={control}
-                    render={({ field }) => (
-                      <InputField
-                        label="नाम"
-                        placeholder="अपना पूरा नाम दर्ज करें"
-                        value={field.value}
-                        error={errors.name?.message}
-                        onChange={field.onChange}
-                      />
-                    )}
+                {showForm && (
+                  <form
+                    onSubmit={handleSubmit(handleAddRecord)}
+                    className="mt-2 flex flex-col gap-4 border-t border-surface-border pt-5 animate-fade-in"
+                  >
+                    <Controller
+                      name="name"
+                      control={control}
+                      render={({ field }) => (
+                        <InputField
+                          label="नाम"
+                          placeholder="अपना पूरा नाम दर्ज करें"
+                          value={field.value}
+                          error={errors.name?.message}
+                          onChange={field.onChange}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="phone"
+                      control={control}
+                      render={({ field }) => (
+                        <InputField
+                          label="फ़ोन नंबर"
+                          placeholder="10 अंकों का मोबाइल नंबर"
+                          value={field.value}
+                          error={errors.phone?.message}
+                          inputMode="numeric"
+                          maxLength={10}
+                          onChange={(v) => field.onChange(v.replace(/\D/g, ""))}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="location"
+                      control={control}
+                      render={({ field }) => (
+                        <InputField
+                          label="स्थान"
+                          placeholder="स्थान दर्ज करें"
+                          value={field.value}
+                          error={errors.location?.message}
+                          onChange={field.onChange}
+                        />
+                      )}
+                    />
+
+                    <SubmitButton 
+                      loading={false} 
+                      label="सूची में जोड़ें (Add to List)" 
+                      onClick={handleSubmit(handleAddRecord)} 
+                    />
+                  </form>
+                )}
+              </div>
+            </FormCard>
+
+            {tempSubmissions.length > 0 && (
+              <div className="mt-2 rounded-2xl border border-surface-border bg-white p-6 shadow-sm animate-fade-in">
+                <div className="flex flex-col gap-1 mb-4">
+                  <h2 className="text-base font-bold text-ink">
+                    अस्थायी रूप से सहेजे गए रिकॉर्ड ({tempSubmissions.length})
+                  </h2>
+                  <p className="text-xs text-ink-muted">
+                    ये रिकॉर्ड अभी डेटाबेस में सहेजे नहीं गए हैं। आप नीचे "डेटा सबमिट करें" दबाकर इन्हें एक साथ भेज सकते हैं।
+                  </p>
+                </div>
+                <div className="overflow-x-auto rounded-xl border border-surface-border">
+                  <table className="min-w-full divide-y divide-surface-border text-left text-sm">
+                    <thead className="bg-surface-card text-ink font-semibold text-xs uppercase">
+                      <tr>
+                        <th className="px-4 py-3">नाम</th>
+                        <th className="px-4 py-3">फ़ोन नंबर</th>
+                        <th className="px-4 py-3">नगर</th>
+                        <th className="px-4 py-3">स्थान</th>
+                        <th className="px-4 py-3 text-right">कार्रवाई</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-surface-border">
+                      {tempSubmissions.map((item, index) => (
+                        <tr key={index} className="hover:bg-slate-50 transition-colors">
+                          <td className="px-4 py-3 font-medium text-ink">{item.name}</td>
+                          <td className="px-4 py-3 text-ink-muted">{item.phone}</td>
+                          <td className="px-4 py-3 text-ink-muted">{item.nagar}</td>
+                          <td className="px-4 py-3 text-ink-muted">{item.location}</td>
+                          <td className="px-4 py-3 text-right">
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveRecord(index)}
+                              className="text-xs font-semibold text-red-600 hover:text-red-800 transition-colors"
+                            >
+                              हटाएं
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mt-5 flex flex-col gap-3">
+                  <div className="flex justify-between items-center text-sm font-semibold text-ink px-1">
+                    <span>कुल अस्थायी रिकॉर्ड:</span>
+                    <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs">
+                      {tempSubmissions.length}
+                    </span>
+                  </div>
+                  <SubmitButton
+                    loading={submitting}
+                    label="डेटा सबमिट करें (Submit Batch)"
+                    onClick={handleBulkSubmit}
                   />
-                  <Controller
-                    name="phone"
-                    control={control}
-                    render={({ field }) => (
-                      <InputField
-                        label="फ़ोन नंबर"
-                        placeholder="10 अंकों का मोबाइल नंबर"
-                        value={field.value}
-                        error={errors.phone?.message}
-                        inputMode="numeric"
-                        maxLength={10}
-                        onChange={(v) => field.onChange(v.replace(/\D/g, ""))}
-                      />
-                    )}
-                  />
-                  <Controller
-                    name="location"
-                    control={control}
-                    render={({ field }) => (
-                      <InputField
-                        label="स्थान"
-                        placeholder="स्थान दर्ज करें"
-                        value={field.value}
-                        error={errors.location?.message}
-                        onChange={field.onChange}
-                      />
-                    )}
-                  />
-
-                  <SubmitButton loading={submitting} onClick={handleSubmit(onSubmit)} />
-                </form>
-              )}
-            </div>
-          </FormCard>
+                </div>
+              </div>
+            )}
+          </div>
         )}
       </main>
 

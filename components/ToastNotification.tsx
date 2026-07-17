@@ -13,4 +13,7 @@ export const ToastNotification = {
   error(message: string) {
     toast.error(message);
   },
+  info(message: string) {
+    toast.info(message);
+  },
 };

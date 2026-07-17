@@ -26,33 +26,47 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "अमान्य अनुरोध" }, { status: 400 });
   }
 
-  const result = submissionSchema.safeParse(body);
-  if (!result.success) {
-    const firstIssue = result.error.issues[0];
-    return NextResponse.json(
-      { error: firstIssue?.message ?? "अमान्य डेटा" },
-      { status: 400 }
-    );
+  const isArray = Array.isArray(body);
+  const items = isArray ? (body as any[]) : [body];
+
+  if (items.length === 0) {
+    return NextResponse.json({ error: "कोई डेटा प्रदान नहीं किया गया" }, { status: 400 });
   }
 
-  const { vibhag, zilla, nagar } = result.data;
-  const validChain = await isValidChain(vibhag, zilla, nagar);
-  if (!validChain) {
-    return NextResponse.json(
-      { error: "चयनित विभाग / जिला / नगर मेल नहीं खाते" },
-      { status: 400 }
-    );
+  const validatedItems = [];
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    const result = submissionSchema.safeParse(item);
+    if (!result.success) {
+      const firstIssue = result.error.issues[0];
+      const errorMsg = isArray 
+        ? `पंक्ति ${i + 1}: ${firstIssue?.message ?? "अमान्य डेटा"}`
+        : (firstIssue?.message ?? "अमान्य डेटा");
+      return NextResponse.json({ error: errorMsg }, { status: 400 });
+    }
+
+    const { vibhag, zilla, nagar } = result.data;
+    const validChain = await isValidChain(vibhag, zilla, nagar);
+    if (!validChain) {
+      const errorMsg = isArray
+        ? `पंक्ति ${i + 1}: चयनित विभाग / जिला / नगर मेल नहीं खाते`
+        : "चयनित विभाग / जिला / नगर मेल नहीं खाते";
+      return NextResponse.json({ error: errorMsg }, { status: 400 });
+    }
+
+    validatedItems.push({
+      vibhag: result.data.vibhag,
+      zilla: result.data.zilla,
+      nagar: result.data.nagar,
+      name: result.data.name,
+      phone: result.data.phone,
+      location: result.data.location,
+    });
   }
 
   const supabase = supabaseServer();
-  const { error } = await supabase.from("responses").insert({
-    vibhag: result.data.vibhag,
-    zilla: result.data.zilla,
-    nagar: result.data.nagar,
-    name: result.data.name,
-    phone: result.data.phone,
-    location: result.data.location,
-  });
+  const { error } = await supabase.from("responses").insert(validatedItems);
 
   if (error) {
     console.error("Supabase insert error:", error.message);
