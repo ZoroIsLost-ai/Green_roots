@@ -67,7 +67,7 @@ export async function verifySessionToken(token: string | undefined | null): Prom
     const payloadBytes = base64urlDecode(payloadB64);
     const sigBytes = base64urlDecode(sigB64);
 
-    const valid = await crypto.subtle.verify("HMAC", key, sigBytes, payloadBytes);
+    const valid = await crypto.subtle.verify("HMAC", key, sigBytes as any, payloadBytes as any);
     if (!valid) return false;
 
     const payload = JSON.parse(new TextDecoder().decode(payloadBytes));
