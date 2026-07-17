@@ -5,10 +5,17 @@
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
   }
 
   body {
     @apply bg-surface text-ink antialiased;
+    /* Subtle premium organic green background gradient */
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.04) 0px, transparent 50%),
+      radial-gradient(at 50% 0%, rgba(52, 211, 153, 0.03) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(4, 120, 87, 0.04) 0px, transparent 50%);
+    background-attachment: fixed;
   }
 
   * {
@@ -16,7 +23,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid #2563eb;
+    outline: 2px solid #10b981;
     outline-offset: 2px;
     border-radius: 6px;
   }
