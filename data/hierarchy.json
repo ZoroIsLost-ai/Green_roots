@@ -67,41 +67,41 @@
   },
   "रतलाम": {
     "रतलाम": {
-      "gramin_khand": [],
-      "khandsam_nagar": [],
-      "anya_nagar": [],
+      "gramin_khand": ["बाजना", "सैलाना", "रावटी", "नामली", "धराड़"],
+      "khandsam_nagar": ["रतलाम"],
+      "anya_nagar": ["नामली", "सैलाना"],
       "mahanagariya_nagar": []
     },
     "जावरा": {
-      "gramin_khand": [],
-      "khandsam_nagar": [],
-      "anya_nagar": [],
+      "gramin_khand": ["आलोट", "ताल", "बड़ावदा", "रिंगनोद", "पिपलोदा"],
+      "khandsam_nagar": ["जावरा"],
+      "anya_nagar": ["आलोट", "ताल"],
       "mahanagariya_nagar": []
     },
     "झाबुआ": {
-      "gramin_khand": [],
+      "gramin_khand": ["मेघनगर", "झाबुआ ग्रामीण", "राणापुर", "पारा"],
       "khandsam_nagar": [],
-      "anya_nagar": [],
+      "anya_nagar": ["पेटलावद", "थांदला", "मेघनगर", "राणापुर"],
       "mahanagariya_nagar": []
     }
   },
   "धार": {
     "धार": {
-      "gramin_khand": [],
-      "khandsam_nagar": [],
-      "anya_nagar": [],
+      "gramin_khand": ["अमझेरा", "राजगढ़", "बदनावर", "कानवन", "घाटाबिल्लोद", "धामनोद", "नालछा"],
+      "khandsam_nagar": ["धार", "पीथमपुर"],
+      "anya_nagar": ["राजगढ़", "सरदारपुर", "बदनावर", "धामनोद", "धरमपुरी", "मांडव"],
       "mahanagariya_nagar": []
     },
     "कुक्षी": {
-      "gramin_khand": [],
+      "gramin_khand": ["कुक्षी", "मनावर", "उमरबन", "गंधवानी", "टांडा", "बाग", "डही"],
       "khandsam_nagar": [],
-      "anya_nagar": [],
+      "anya_nagar": ["कुक्षी", "मनावर", "डही"],
       "mahanagariya_nagar": []
     },
     "अलीराजपुर": {
-      "gramin_khand": [],
+      "gramin_khand": ["आलीराजपुर", "जोबट", "आजाद नगर", "सोंडवा", "कट्ठीवाड़ा", "छकतला"],
       "khandsam_nagar": [],
-      "anya_nagar": [],
+      "anya_nagar": ["आलीराजपुर", "जोबट", "आजाद नगर"],
       "mahanagariya_nagar": []
     }
   },
@@ -110,13 +110,13 @@
       "gramin_khand": [],
       "khandsam_nagar": [],
       "anya_nagar": [],
-      "mahanagariya_nagar": []
+      "mahanagariya_nagar": ["अहिल्या", "सुभाष", "संत रविदास", "भगतसिंह", "बाहुबली", "आदि शंकराचार्य", "ज्योतिबाफुले", "केशव", "महर्षि अरविंद"]
     },
     "बद्रीनाथ": {
       "gramin_khand": [],
       "khandsam_nagar": [],
       "anya_nagar": [],
-      "mahanagariya_nagar": []
+      "mahanagariya_nagar": ["वीर गोगादेव", "सम्राट चंद्रगुप्त", "लवकुश", "प. दीनदयाल", "संत कबीर", "माधव", "विश्वकर्मा", "डॉ. अम्बेडकर", "वीर सावरकर"]
     },
     "जगन्नाथ": {
       "gramin_khand": [],
@@ -128,58 +128,58 @@
       "gramin_khand": [],
       "khandsam_nagar": [],
       "anya_nagar": [],
-      "mahanagariya_nagar": []
+      "mahanagariya_nagar": ["गौतम बुद्ध", "समर्थ रामदास", "वीर तेजाजी", "मंगल पांडे", "सरदार पटेल", "संभाजी", "प्रताप", "गुरु गोविंद सिंह", "विवेकानंद"]
     },
     "महू": {
-      "gramin_khand": [],
-      "khandsam_nagar": [],
-      "anya_nagar": [],
+      "gramin_khand": ["महू ग्रामीण", "बेटमा", "देपालपुर", "साँवेर", "कम्पेल"],
+      "khandsam_nagar": ["महू नगर"],
+      "anya_nagar": ["मानपुर", "बेटमा", "देपालपुर", "गौतमपुरा", "हातोद", "साँवेर"],
       "mahanagariya_nagar": []
     }
   },
   "खरगोन": {
     "सेंधवा": {
-      "gramin_khand": [],
-      "khandsam_nagar": [],
-      "anya_nagar": [],
+      "gramin_khand": ["सेंधवा ग्रामीण", "बलवाड़ी", "निवाली", "पानसेमल"],
+      "khandsam_nagar": ["सेंधवा"],
+      "anya_nagar": ["पानसेमल", "खेतिया"],
       "mahanagariya_nagar": []
     },
     "बड़वाह": {
-      "gramin_khand": [],
-      "khandsam_nagar": [],
-      "anya_nagar": [],
+      "gramin_khand": ["बड़वाह ग्रामीण", "करही", "महेश्वर", "सनावद"],
+      "khandsam_nagar": ["बड़वाह"],
+      "anya_nagar": ["सनावद", "करही", "महेश्वर", "मंडलेश्वर"],
       "mahanagariya_nagar": []
     },
     "खरगोन": {
-      "gramin_khand": [],
-      "khandsam_nagar": [],
-      "anya_nagar": [],
+      "gramin_khand": ["खरगोन ग्रामीण", "सेगॉंव", "भगवानपुरा", "झिरनिया", "भिकनगॉंव", "गोगावां", "कसरावद"],
+      "khandsam_nagar": ["खरगोन"],
+      "anya_nagar": ["कसरावद", "भीकनगांव", "बिस्टान"],
       "mahanagariya_nagar": []
     },
     "बड़वानी": {
-      "gramin_khand": [],
-      "khandsam_nagar": [],
-      "anya_nagar": [],
+      "gramin_khand": ["बड़वानी ग्रामीण", "अंजड़", "राजपुर", "पाटी"],
+      "khandsam_nagar": ["बड़वानी"],
+      "anya_nagar": ["अंजड़", "ठीकरी", "राजपुर", "पलसूद"],
       "mahanagariya_nagar": []
     }
   },
   "खंडवा": {
     "खंडवा": {
-      "gramin_khand": [],
-      "khandsam_nagar": [],
-      "anya_nagar": [],
+      "gramin_khand": ["छैगॉंव माखन", "पंधाना", "सिंगोट", "खालवा"],
+      "khandsam_nagar": ["खंडवा"],
+      "anya_nagar": ["पंधाना"],
       "mahanagariya_nagar": []
     },
     "ओंकारेश्वर": {
-      "gramin_khand": [],
+      "gramin_khand": ["ओमकारेश्वर", "मुंदी", "हरसूद", "पटाजन"],
       "khandsam_nagar": [],
-      "anya_nagar": [],
+      "anya_nagar": ["ओम्कारेश्वर", "मुंदी", "पुनासा", "हरसूद"],
       "mahanagariya_nagar": []
     },
     "ब्रह्मपुर": {
-      "gramin_khand": [],
-      "khandsam_nagar": [],
-      "anya_nagar": [],
+      "gramin_khand": ["शाहपुर", "खकनार", "नेपानगर", "धुलकोट"],
+      "khandsam_nagar": ["ब्रम्हपुर"],
+      "anya_nagar": ["शाहपुर", "नेपानगर"],
       "mahanagariya_nagar": []
     }
   }
